@@ -1,0 +1,36 @@
+public class Solution {
+
+    // Complete the nonDivisibleSubset function below.
+    static int nonDivisibleSubset(int k, int[] S) {
+        if(k == 1) {
+            return 1;
+        }
+        
+        if(S == null || S.length < 2) return 0;
+        
+        int len = S.length;
+        if(len == 2){
+            if(S[0] + S[1] % k != 0) return 2;
+            else return 0;
+        }
+        
+        // decrease dimension
+        int[] candidates = new int[k];
+        for(int i = 0; i < len; i++){
+            S[i] = S[i] % k;    
+            candidates[S[i]]++;
+        }
+
+        int res = 0;   
+        
+        // the two number which can make k, only use the larger count to get the max length subset
+        // for 0 and k/2, it can only be used once if it exist.
+        for(int i = 1; i <= k/2; i++ ){
+            res = res + Math.max(candidates[i], candidates[k - i]);   
+        }
+        if(candidates[0] > 0)res = res + 1;   
+        if(k % 2 == 0) res = res - candidates[k/2] + 1;
+        
+        return res;
+
+    }
